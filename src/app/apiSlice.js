@@ -2,7 +2,7 @@ import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import { setCredentials, logOut ,selectCurrentAccessToken} from '../features/auth/authSlice';
 import {jwtDecode } from 'jwt-decode';
 
-const baseUrl = "https://iot2.owattspay.net/api/v2";//"http://localhost:4000";
+const baseUrl = "http://66.29.130.36:5016/api/v2";//"http://localhost:4000";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: baseUrl,
@@ -10,10 +10,9 @@ const baseQuery = fetchBaseQuery({
     prepareHeaders: (async (headers,{getState})=>{
         const token = await localStorage.getItem('token');//getState().auth.token;
         if(token){
-            headers.set("Authorization",`Bearer ${token}`)
+           headers.set("Authorization",`Bearer ${token}`)
         }
         headers.set('Content-Type', 'application/json');
-        headers.set('Access-Control-Allow-Origin','*');
         return headers;
     })
 });

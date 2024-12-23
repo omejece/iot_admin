@@ -1,0 +1,32 @@
+/* styles.css */
+  
+  .preloader {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    opacity: 0.5;
+    z-index: 5000000;
+  }
+  
+  .spinner {
+    width: 5vw;
+    height: 5vw;
+    border: 5px solid #ddd; /* Outer border */
+    border-top: 5px solid #3498db; /* Spinner color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

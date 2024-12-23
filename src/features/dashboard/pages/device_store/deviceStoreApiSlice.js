@@ -6,7 +6,7 @@ import { apiSlice } from "../../../../app/apiSlice";
 
 
 
-const deviceApiSlice = apiSlice.injectEndpoints({
+const deviceStoreApiSlice = apiSlice.injectEndpoints({
      endpoints: (builder)=>({
         createDeviceStore: builder.mutation({
             query: (credentials)=>({
@@ -57,4 +57,4 @@ export const {
     useGetDevicesStoreQuery,
     useGetDeviceStoreQuery,
     useSearchDeviceStoreQuery
-} = deviceApiSlice;
+} = deviceStoreApiSlice;

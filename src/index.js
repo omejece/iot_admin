@@ -9,9 +9,9 @@ import Dashboard from './features/dashboard/Dashboard';
 import RequireAuth from './features/auth/RequireAuth';
 import Home from './features/dashboard/pages/home/Home';
 import DeviceStore from './features/dashboard/pages/device_store/DeviceStore';
-import DeviceStoreUpdate from './features/dashboard/pages/device_store/DeviceStoreUpdate';
-import CreateDeviceStore from './features/dashboard/pages/device_store/createDeviceStore';
 import DeviceStoreDetail from './features/dashboard/pages/device_store/DeviceStoreDetail';
+import Device from './features/dashboard/pages/devices/Device';
+import DeviceDetail from './features/dashboard/pages/device_store/DeviceStoreDetail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,9 +24,9 @@ root.render(
                     <Route path="/dashboard" element={<Dashboard /> }>
                          <Route path="" element={<Home />} />
                          <Route path="device_store" element={<DeviceStore />} />
-                         <Route path="update_device_store/:imei" element={<DeviceStoreUpdate />} />
-                         <Route path="create_device_store" element={<CreateDeviceStore />} />
                          <Route path="device_store_detail/:imei" element={<DeviceStoreDetail />} />
+                         <Route path="devices" element={<Device />} />
+                         <Route path="device/:imei" element={<DeviceDetail />} />
                     </Route>
                 </Route>
             </Routes>

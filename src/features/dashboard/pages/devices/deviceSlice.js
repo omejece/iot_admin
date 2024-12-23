@@ -3,20 +3,20 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-const deviceSlice = createSlice({
-    name:'device',
-    initialState:{devices:[],device:null},
+const devicesStoreSlice = createSlice({
+    name:'devicesStore',
+    initialState:{deviceStores:[],deviceStore:null,deviceTypes:["","Prepaid meter","Smart home","Kike meter","Gen starter","Gateway","Auto bidder","Inverter","Auto gen","Obidder Meter"]},
     reducers: {
-         setDevices: (state,actions)=>{
-             state.devices = actions.payload;
+         setDeviceStores: (state,actions)=>{
+             state.deviceStores = actions.payload;
          },
 
-         setDevice: (state,actions)=>{
-            state.device = actions.payload;
+         setDeviceStore: (state,actions)=>{
+            state.deviceStore = actions.payload;
          }
     }
 });
 
-export const {setDevice,setDevices} = deviceSlice.actions;
-export default deviceSlice.reducer;
-export const delectedDevice = (state)=> state.device;
+export const {setDeviceStore,setDeviceStores} = devicesStoreSlice.actions;
+export default devicesStoreSlice.reducer;
+export const delectedDeviceStore = (state)=> state.deviceStores;

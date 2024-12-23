@@ -5,11 +5,19 @@
 import { useEffect, useState } from "react"
 import sideData from "../data/sideData"
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
 
 
 const PageSideBar = (props)=>{
     const navigate = useNavigate();
     const [tempSideData, setTempSideData] = useState([]);
+    const myDetail = useSelector(selectCurrentUser);
+
+    useEffect(()=>{
+    },[
+        myDetail
+    ]);
  
     useEffect(()=>{
         setTempSideData(sideData);
@@ -39,7 +47,7 @@ const PageSideBar = (props)=>{
             <aside className="main-sidebar sidebar-dark-primary elevation-4">
                 <a href="index3.html" className="brand-link">
                 <img src={require("../assets/dist/img/AdminLTELogo.png")} alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style={{opacity: .8}} />
-                <span className="brand-text font-weight-light">AdminLTE 3</span>
+                <span className="brand-text font-weight-light">IoT Admin</span>
                 </a>
 
                 <div className="sidebar">
@@ -48,7 +56,7 @@ const PageSideBar = (props)=>{
                     <img src={require("../assets/dist/img/user2-160x160.jpg")} className="img-circle elevation-2" alt="User Image" />
                     </div>
                     <div className="info">
-                    <a href="#" className="d-block">Alexander Pierce</a>
+                    <a href="#" className="d-block">{myDetail?.email}</a>
                     </div>
                 </div>
 

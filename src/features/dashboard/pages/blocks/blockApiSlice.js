@@ -6,44 +6,44 @@ import { apiSlice } from "../../../../app/apiSlice";
 
 
 
-const deviceApiSlice = apiSlice.injectEndpoints({
+const blockApiSlice = apiSlice.injectEndpoints({
      endpoints: (builder)=>({
-        createDevice: builder.mutation({
+        createBlock: builder.mutation({
             query: (credentials)=>({
-                url: '/admin/device/store',
+                url: '/admin/block/store',
                 method: 'POST',
                 body: {...credentials}
             })
         }),
-        editDevice: builder.mutation({
+        editBlock: builder.mutation({
             query: (credentials)=>({
-                url: '/admin/device/update',
+                url: '/admin/block/update',
                 method: 'PUT',
                 body: {...credentials}
             })
         }),
-        deleteDevice: builder.mutation({
+        deleteBlock: builder.mutation({
             query: (credentials)=>({
-                url: '/admin/device/delete',
+                url: '/admin/block/delete',
                 method: 'DELETE',
                 body: {...credentials}
             })
         }),
-        getDevices: builder.query({
+        getBlocks: builder.query({
             query: (credentials)=>({
-                url: '/admin/device/read',
+                url: '/admin/block/read',
                 method: 'GET'
             })
         }),
-        getDevice: builder.query({
+        getBlock: builder.query({
             query: (credentials)=>({
-                url: `/admin/device/detail?imei=${credentials.imei}`,
+                url: `/admin/block/detail?reference=${credentials.reference}`,
                 method: 'GET'
             })
         }),
-        searchDevice: builder.query({
+        searchBlock: builder.query({
             query: (credentials)=>({
-                url: `/admin/device/search?imei=${credentials.imei}`,
+                url: `/admin/block/search?reference=${credentials.reference}`,
                 method: 'GET'
             })
         })
@@ -51,10 +51,10 @@ const deviceApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-    useCreateDeviceMutation,
-    useEditDeviceMutation,
-    useDeleteDeviceMutation,
-    useGetDevicesQuery,
-    useGetDeviceQuery,
-    useSearchDeviceQuery
-} = deviceApiSlice;
+    useCreateBlockMutation,
+    useEditBlockMutation,
+    useDeleteBlockMutation,
+    useGetBlocksQuery,
+    useGetBlockQuery,
+    useSearchBlockQuery
+} = blockApiSlice;
