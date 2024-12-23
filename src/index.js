@@ -26,7 +26,7 @@ root.render(
                          <Route path="device_store" element={<DeviceStore />} />
                          <Route path="device_store_detail/:imei" element={<DeviceStoreDetail />} />
                          <Route path="devices" element={<Device />} />
-                         <Route path="device/:imei" element={<DeviceDetail />} />
+                         <Route path="device_detail/:imei" element={<DeviceDetail />} />
                     </Route>
                 </Route>
             </Routes>

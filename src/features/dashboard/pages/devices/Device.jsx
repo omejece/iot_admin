@@ -15,6 +15,8 @@ const Device = (props)=>{
     const navigate = useNavigate();
     const deviceTypes = useSelector((state)=>state.device.deviceTypes);
     const blocks = useSelector((state)=>state.block.blocks);
+    const merchants = useSelector((state)=>state.merchant.merchants);
+    const [merchantBlocks,setMerchantBlocks] = useState([]);
     const {data: devices,isLoading: isDeviceLoading, isSuccess: isDeviceLoaded, refetch: refetchDevice} = useGetDevicesQuery();
     const [createDevice,{data:deviceSaveResp,isSuccess:isDeviceSaveSuccess,isError: isDeviceErrorSave}] = useCreateDeviceMutation();
     const [editDevice,{data:deviceUpdateResp,isSuccess:isDeviceUpdateSuccess,isError: isDeviceErrorUpdate}] = useEditDeviceMutation();
@@ -33,8 +35,10 @@ const Device = (props)=>{
     const [imei,setImei] = useState("");
     const [deviceType,setDeviceType] = useState("");
     const [blockReference,setBlockReference] = useState("");
+    const [merchant,setMerchant] = useState("");
 
 
+   
 
     useEffect(()=>{
     },[
@@ -42,7 +46,8 @@ const Device = (props)=>{
         showUpdateDeviceModal,
         currentDevice,
         showSpinner,
-        blocks
+        blocks,
+        merchantBlocks
     ]);
 
     useEffect(()=>{
@@ -59,8 +64,10 @@ const Device = (props)=>{
         setCurrentDevice(data);
         setImei(data?.imei);
         setDeviceType(data?.device_type);
+        setDeviceType(data?.merchant_id);
         var foundBlock = blocks.find(x=>x.id == data.block_id);
         setBlockReference(foundBlock?.reference);
+        setMerchantBlocks(blocks);
         setShowUpdateDeviceModal(true);
     }
 
@@ -72,6 +79,8 @@ const Device = (props)=>{
         setShowAddDeviceModal(true);
         setImei("");
         setDeviceType("");
+        setMerchant("");
+        setMerchantBlocks([]);
     }
 
 
@@ -88,7 +97,8 @@ const Device = (props)=>{
             const resp = await editDevice({
                 imei: imei,
                 device_type: deviceType,
-                block_reference: blockReference
+                block_reference: blockReference,
+                merchant: merchant
             }).unwrap();
             if(resp.success == true){
                 setShowSpinner(false);
@@ -116,7 +126,8 @@ const Device = (props)=>{
             const resp = await createDevice({
                 imei: imei,
                 device_type: deviceType,
-                block_reference: blockReference
+                block_reference: blockReference,
+                merchant: merchant
             }).unwrap();
             if(resp.success == true){
                 setShowSpinner(false);
@@ -209,11 +220,21 @@ const Device = (props)=>{
         }
         else if(statusFilter.trim() != "" && blockFilter.trim() == "" && imeiFilter.trim() == ""){
             var filteredData = tempDevice.filter((x)=>{
-                if(x?.data?.output == statusFilter || x?.data?.disabled == x?.data?.output){
-                   return true;
+                if(statusFilter == 0){
+                     if(x?.data?.output == statusFilter && x?.data?.disabled == statusFilter){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }
                 }
                 else{
-                   return false;
+                     if(x?.data?.output == statusFilter || x?.data?.disabled == statusFilter){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }                   
                 }
             })
             setAllDevice(filteredData);
@@ -242,12 +263,22 @@ const Device = (props)=>{
         }
         else if(statusFilter.trim() != "" && blockFilter.trim() != "" && imeiFilter.trim() == ""){
             var filteredData = tempDevice.filter((x)=>{
-                if(x?.block_id == blockFilter  && (x?.data?.output == statusFilter || x?.data?.disabled == x?.data?.output)){
-                    return true;
-                 }
-                 else{
-                    return false;
-                 }
+                if(statusFilter == 0){
+                     if(x?.block_id == blockFilter  && (x?.data?.output == statusFilter && x?.data?.disabled == statusFilter)){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }
+                }
+                else{
+                     if(x?.block_id == blockFilter  && (x?.data?.output == statusFilter || x?.data?.disabled == statusFilter)){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }                  
+                }
            })
            setAllDevice(filteredData);           
         }
@@ -264,22 +295,42 @@ const Device = (props)=>{
         }
         else if(statusFilter.trim() != "" && blockFilter.trim() == "" && imeiFilter.trim() != ""){
             var filteredData = tempDevice.filter((x)=>{
-                if(x?.imei.startsWith(imeiFilter) && (x?.data?.output == statusFilter || x?.data?.disabled == x?.data?.output)){
-                    return true;
+                 if(statusFilter == 0){
+                     if(x?.imei.startsWith(imeiFilter) && (x?.data?.output == statusFilter && x?.data?.disabled == statusFilter)){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }
                  }
                  else{
-                    return false;
+                     if(x?.imei.startsWith(imeiFilter) && (x?.data?.output == statusFilter || x?.data?.disabled == statusFilter)){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }
                  }
            })
            setAllDevice(filteredData);           
         }
         else if(statusFilter.trim() != "" && blockFilter.trim() != "" && imeiFilter.trim() != ""){
             var filteredData = tempDevice.filter((x)=>{
-                if(x?.block_id == blockFilter && x?.imei.startsWith(imeiFilter) && (x?.data?.output == statusFilter || x?.data?.disabled == x?.data?.output)){
-                    return true;
+                 if(statusFilter == 0){
+                     if(x?.block_id == blockFilter && x?.imei.startsWith(imeiFilter) && (x?.data?.output == statusFilter && x?.data?.disabled == statusFilter)){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }
                  }
                  else{
-                    return false;
+                     if(x?.block_id == blockFilter && x?.imei.startsWith(imeiFilter) && (x?.data?.output == statusFilter || x?.data?.disabled == statusFilter)){
+                        return true;
+                     }
+                     else{
+                        return false;
+                     }                    
                  }
            })
            setAllDevice(filteredData);           
@@ -287,9 +338,22 @@ const Device = (props)=>{
     }
 
 
+    
+    const handleChangeMerchant = (data)=>{
+         setMerchant(data);
+         var filtered = blocks.filter(x=>{
+              if(x.merchant_id == data){
+                 return true;
+              }
+              else{
+                 return false;
+              }
+         });
 
+         setMerchantBlocks(filtered);
+    } 
 
-
+  
 
     return (
         <>
@@ -378,7 +442,7 @@ const Device = (props)=>{
                                                         </a>
                                                     </Dropdown.Item>
                                                     <Dropdown.Item href="#">
-                                                        <a href="#" onClick={()=>navigate('/dashboard/device/'+x.imei)} className="dropdown-item">
+                                                        <a href="#" onClick={()=>navigate('/dashboard/device_detail/'+x.imei)} className="dropdown-item">
                                                             <i className="fas fa-eye mr-2"></i> Detail
                                                         </a>
                                                     </Dropdown.Item>
@@ -439,6 +503,27 @@ const Device = (props)=>{
                         </Form.Group>
 
                         <Form.Group className="mb-3">
+                            <Form.Label>Merchants</Form.Label>
+                            <Form.Select    
+                                value={merchant}
+                                className="form-control"
+                                onChange={(e)=>handleChangeMerchant(e.target.value)}
+                                required
+                            >
+                                <option value="">-- Select merchants --</option>
+                                 {
+                                    merchants?.length
+                                    ? merchants.map((x,y)=>
+                                        <option value={x.id}>
+                                            {x?.name}
+                                        </option>
+                                    )
+                                    :<></>
+                                }
+                            </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
                             <Form.Label>Block</Form.Label>
                             <Form.Select    
                                 value={blockReference}
@@ -447,8 +532,8 @@ const Device = (props)=>{
                                 required
                             >
                                  {
-                                    blocks?.length
-                                    ? blocks.map((x,y)=>
+                                    merchantBlocks?.length
+                                    ? merchantBlocks.map((x,y)=>
                                         <option value={x.reference}>
                                             {x?.name}
                                         </option>
@@ -502,6 +587,26 @@ const Device = (props)=>{
                             </Form.Select>
                         </Form.Group>
 
+                        <Form.Group className="mb-3">
+                            <Form.Label>Merchants</Form.Label>
+                            <Form.Select    
+                                value={merchant}
+                                className="form-control"
+                                onChange={(e)=>handleChangeMerchant(e.target.value)}
+                                required
+                            >
+                                 {
+                                    merchants?.length
+                                    ? merchants.map((x,y)=>
+                                        <option value={x.id}>
+                                            {x?.name}
+                                        </option>
+                                    )
+                                    :<></>
+                                }
+                            </Form.Select>
+                        </Form.Group>
+
                         <Form.Group className="mb-3" >
                             <Form.Label>Block</Form.Label>
                             <Form.Select    
@@ -511,8 +616,8 @@ const Device = (props)=>{
                                 required
                             >
                                  {
-                                    blocks?.length
-                                    ? blocks.map((x,y)=>
+                                    merchantBlocks?.length
+                                    ? merchantBlocks.map((x,y)=>
                                         <option value={x.reference}>
                                             {x?.name}
                                         </option>
