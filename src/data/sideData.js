@@ -35,6 +35,11 @@ const sideData = [
     icon:'fas fa-users'
    },
    {
+    name:'Blocks',
+    path:'/dashboard/blocks',
+    icon:'fas fa-university'
+   },
+   {
     name:'Consumptions',
     path:'/dashboard/consumptions',
     icon:'fas fa-bolt'
@@ -53,11 +58,6 @@ const sideData = [
     name:'Gen logs',
     path:'/dashboard/genlogs',
     icon:'fas fa-list'
-   },
-   {
-    name:'Blocks',
-    path:'/dashboard/blocks',
-    icon:'fas fa-university'
    }
 ]
 

@@ -39,6 +39,9 @@ const Device = (props)=>{
 
 
    
+    useEffect(()=>{
+        refetchDevice();
+    },[]); 
 
     useEffect(()=>{
     },[
@@ -427,7 +430,7 @@ const Device = (props)=>{
                                           <td>{y + 1}</td>
                                           <td>{x.imei.substring(0,16)}</td>
                                           <td>{deviceTypes[x?.device_type]}</td>
-                                          <td>{x?.data?.output == 1 ? "Onn" : "Off" }</td>
+                                          <td>{x?.data?.output == 0 ? "Onn" : "Off" }</td>
                                           <td>{x?.data?.disabled == 1 ? "Disable" : "Active" }</td>
                                           <td>
                                             <Dropdown>

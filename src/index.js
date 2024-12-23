@@ -11,7 +11,11 @@ import Home from './features/dashboard/pages/home/Home';
 import DeviceStore from './features/dashboard/pages/device_store/DeviceStore';
 import DeviceStoreDetail from './features/dashboard/pages/device_store/DeviceStoreDetail';
 import Device from './features/dashboard/pages/devices/Device';
-import DeviceDetail from './features/dashboard/pages/device_store/DeviceStoreDetail';
+import DeviceDetail from './features/dashboard/pages/devices/DeviceDetail';
+import Merchant from './features/dashboard/pages/merchants/Merchant';
+import MerchantDetail from './features/dashboard/pages/merchants/MerchantDetail';
+import Block from './features/dashboard/pages/blocks/Block';
+import BlockDetail from './features/dashboard/pages/blocks/BlockDetail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,10 +27,19 @@ root.render(
                 <Route element={<RequireAuth />}>
                     <Route path="/dashboard" element={<Dashboard /> }>
                          <Route path="" element={<Home />} />
+
                          <Route path="device_store" element={<DeviceStore />} />
                          <Route path="device_store_detail/:imei" element={<DeviceStoreDetail />} />
+
                          <Route path="devices" element={<Device />} />
                          <Route path="device_detail/:imei" element={<DeviceDetail />} />
+
+                         <Route path="merchants" element={<Merchant />} />
+                         <Route path="merchant_detail/:id" element={<MerchantDetail />} />
+
+                         <Route path="blocks" element={<Block />} />
+                         <Route path="block_detail/:id" element={<BlockDetail />} />
+
                     </Route>
                 </Route>
             </Routes>

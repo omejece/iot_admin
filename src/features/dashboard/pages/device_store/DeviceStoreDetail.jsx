@@ -8,7 +8,7 @@
 
 
 
-const DeviceDetail = (props)=>{
+const DeviceStoreDetail = (props)=>{
 
     return (
         <>
@@ -17,4 +17,4 @@ const DeviceDetail = (props)=>{
     );
 }
 
-export default DeviceDetail;
+export default DeviceStoreDetail;

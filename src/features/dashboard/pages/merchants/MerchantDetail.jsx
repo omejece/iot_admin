@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import {useState} from "react";
 import ProgressSpinner from "../../../../components/ProgressSpinner";
 
-const DeviceDetail = (props)=>{
-    const {imei} = useParams();
+const MerchantDetail = (props)=>{
+    const {id} = useParams();
     const [showSpinner,setShowSpinner] = useState(false);
 
     return (
@@ -12,7 +12,7 @@ const DeviceDetail = (props)=>{
            <div className="container-fluid">
                 <div className="card">
                     <div className="card-header">
-                         <h1 className="card-title">Device Detail</h1>
+                         <h1 className="card-title">Merchant Detail</h1>
                     </div>
                     <div className="card-body" style={{width:'100%',height:'78vh',overflowY: 'auto'}}></div> 
                 </div>  
@@ -21,4 +21,4 @@ const DeviceDetail = (props)=>{
     );
 }
 
-export default DeviceDetail;
+export default MerchantDetail;
