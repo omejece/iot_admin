@@ -47,10 +47,11 @@ const Merchant = (props)=>{
     ]);
 
     useEffect(()=>{
-        if(isMerchantLoaded){
+        if(merchants){
             setAllMerchant(merchants.data);
         }
     },[
+        merchants,
         isMerchantLoaded,
         isMerchantLoading
     ]);

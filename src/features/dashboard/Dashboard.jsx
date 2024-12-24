@@ -19,10 +19,16 @@ const Dashboard = (props)=>{
     const {data: allBlocks, isLoading: isBlockLoading, isSuccess: isBlockLoaded, refetch: refetchBlock } = useGetBlocksQuery();
     const {data: allMerchants, isLoading: isMerchantLoading, isSuccess: isMerchantLoaded, refetch: refetchMerchant } = useGetMerchantsQuery();
 
+    const [sideBarWidth,setSideBarWidth] = useState("15%");
+
     useEffect(()=>{
         refetchBlock();
         refetchMerchant();
     },[]);
+
+    useEffect(()=>{},[
+      sideBarWidth
+    ]);
 
     useEffect(()=>{
       if(isMerchantLoaded){
@@ -49,12 +55,21 @@ const Dashboard = (props)=>{
         dispatch(setBlocks(allBlocks.data));
     }
 
+    const handleControlTab = ()=>{
+         if(sideBarWidth == "15%"){
+            setSideBarWidth("0%");
+         }
+         else{
+            setSideBarWidth("15%");
+         }
+    }
+
      return (
-        <div className="wrapper">
-            <PageNavBar />
-            <PageSideBar />
+        <div className="wrapper" >
+            <PageNavBar onControlTab={handleControlTab} />
+            <PageSideBar width={sideBarWidth} />
             
-            <div class="content-wrapper" style={{padding:'20px'}}>
+            <div class="content-wrapper" style={{paddingLeft:"0%",padding:'5px' }}>
                <Outlet />
             </div>
         </div>

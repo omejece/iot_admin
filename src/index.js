@@ -16,6 +16,7 @@ import Merchant from './features/dashboard/pages/merchants/Merchant';
 import MerchantDetail from './features/dashboard/pages/merchants/MerchantDetail';
 import Block from './features/dashboard/pages/blocks/Block';
 import BlockDetail from './features/dashboard/pages/blocks/BlockDetail';
+import Consumption from './features/dashboard/pages/consumption/Consumption';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -39,6 +40,8 @@ root.render(
 
                          <Route path="blocks" element={<Block />} />
                          <Route path="block_detail/:id" element={<BlockDetail />} />
+
+                         <Route path="consumptions" element={<Consumption />} />
 
                     </Route>
                 </Route>

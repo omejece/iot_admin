@@ -54,10 +54,11 @@ const Device = (props)=>{
     ]);
 
     useEffect(()=>{
-        if(isDeviceLoaded){
+        if(devices){
             setAllDevice(devices.data);
         }
     },[
+        devices,
         isDeviceLoaded,
         isDeviceLoading
     ]);

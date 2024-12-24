@@ -44,7 +44,7 @@ const PageSideBar = (props)=>{
      
     return (
         <>
-            <aside className="main-sidebar sidebar-dark-primary elevation-4">
+            <aside className="main-sidebar sidebar-dark-primary elevation-4" style={{width: props.width}}>
                 <a href="index3.html" className="brand-link">
                 <img src={require("../assets/dist/img/AdminLTELogo.png")} alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style={{opacity: .8}} />
                 <span className="brand-text font-weight-light">IoT Admin</span>

@@ -50,10 +50,11 @@ const Block = (props)=>{
     ]);
 
     useEffect(()=>{
-        if(isBlockLoaded){
+        if(blocks){
             setAllBlock(blocks.data);
         }
     },[
+        blocks,
         isBlockLoaded,
         isBlockLoading
     ]);
@@ -66,7 +67,7 @@ const Block = (props)=>{
         setLongitude(data?.longitude);
         setLatitude(data?.latitude);
         setCapacity(data?.capacity);
-        setMerchant(data?.merchant);
+        setMerchant(data?.merchant_id);
         setShowUpdateBlockModal(true);
     }
 
@@ -102,7 +103,7 @@ const Block = (props)=>{
                 latitude: latitude,
                 capacity: capacity,
                 merchant: merchant,
-                block_referrence: currentBlock.reference
+                reference: currentBlock.reference
             }).unwrap();
             if(resp.success == true){
                 setShowSpinner(false);
@@ -128,7 +129,6 @@ const Block = (props)=>{
             setShowAddBlockModal(false);
             setShowSpinner(true);
             const resp = await createBlock({
-                id: currentBlock.id,
                 name: name,
                 address: address,
                 longitude: longitude,
@@ -169,22 +169,22 @@ const Block = (props)=>{
                     try{
                         setShowSpinner(true);
                         const resp = await deleteBlock({
-                            id: currentBlock.id,
-                            block_referrence: currentBlock.reference
+                            id: data.id,
+                            block_referrence: data.reference
                         }).unwrap();
-                        if(resp.success == true){
+                        if(resp?.success == true){
                             setShowSpinner(false);
                             Swal.fire({title: "Successfull", text:resp.message,icon:"success",timer:2000});
                             refetchBlock();
                         }
                         else{
                             setShowSpinner(false);
-                            Swal.fire({title: "Error", text:resp.message,icon:"warning",timer:2000});
+                            Swal.fire({title: "Error", text:resp?.message,icon:"warning",timer:2000});
                         }
                     }
                     catch(err){
                         setShowSpinner(false);
-                        Swal.fire({title: "Error", text:err.data.message,icon:"warning",timer:2000});
+                        Swal.fire({title: "Error", text:err?.data?.message,icon:"error",timer:2000});
                     }
                }
                else{
@@ -271,7 +271,7 @@ const Block = (props)=>{
                                                         </a>
                                                     </Dropdown.Item>
                                                     <Dropdown.Item href="#">
-                                                        <a href="#" onClick={()=>navigate('/dashboard/Block_detail/'+x.imei)} className="dropdown-item">
+                                                        <a href="#" onClick={()=>navigate('/dashboard/Block_detail/'+x.reference)} className="dropdown-item">
                                                             <i className="fas fa-eye mr-2"></i> Detail
                                                         </a>
                                                     </Dropdown.Item>

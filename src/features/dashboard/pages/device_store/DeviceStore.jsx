@@ -39,8 +39,7 @@ const DeviceStore = (props)=>{
     ]);
 
     useEffect(()=>{
-        if(isDeviceStoreLoaded){
-            console.log(deviceStores);
+        if(deviceStores){
             if(deviceStores?.data?.length > 0){
                 setAllDeviceStore(deviceStores?.data);
             }
@@ -49,6 +48,7 @@ const DeviceStore = (props)=>{
             }
         }
     },[
+        deviceStores,
         isDeviceStoreLoaded,
         isDeviceStoreLoading
     ]);

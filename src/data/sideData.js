@@ -40,11 +40,6 @@ const sideData = [
     icon:'fas fa-university'
    },
    {
-    name:'Consumptions',
-    path:'/dashboard/consumptions',
-    icon:'fas fa-bolt'
-   },
-   {
     name:'Suspected Bypass',
     path:'/dashboard/suspected_bypass',
     icon:'fas fa-fire-extinguisher'
