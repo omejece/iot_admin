@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const Block = (props)=>{
     
     const navigate = useNavigate();
+    const energySource = useSelector((state)=>state.energySource.sources);
     const merchants = useSelector((state)=>state.merchant.merchants);
     const {data: blocks,isLoading: isBlockLoading, isSuccess: isBlockLoaded, refetch: refetchBlock} = useGetBlocksQuery();
     const [createBlock,{isSuccess:isBlockSaveSuccess,isError: isBlockErrorSave}] = useCreateBlockMutation();
@@ -170,7 +171,7 @@ const Block = (props)=>{
                         setShowSpinner(true);
                         const resp = await deleteBlock({
                             id: data.id,
-                            block_referrence: data.reference
+                            reference: data.reference
                         }).unwrap();
                         if(resp?.success == true){
                             setShowSpinner(false);
@@ -195,6 +196,7 @@ const Block = (props)=>{
 
 
     const handleFilterData = (value)=>{
+        setFilterByName(value);
         var filteredData = blocks.data.filter((x)=>{
             if(x?.name.toLowerCase().startsWith(value.trim().toLowerCase())){
                 return true;
@@ -233,12 +235,13 @@ const Block = (props)=>{
                          </div>
                     </div>
                     <div className="card-body" style={{width:'100%',height:'78vh',overflowY: 'auto'}}>
-                         <table className="table table-hashed">
+                         <table className="table table-bordered">
                              <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Reference</th>
+                                    <th>Power Source</th>
                                     <th>Capacity (KW)</th>
                                     <th>Address</th>
                                     <th>Longitude</th>
@@ -254,6 +257,7 @@ const Block = (props)=>{
                                           <td>{y + 1}</td>
                                           <td>{x.name}</td>
                                           <td>{x?.reference}</td>
+                                          <td>{energySource[x?.data?.source] ? energySource[x?.data?.source] : 'No power'}</td>
                                           <td>{x?.capacity}</td>
                                           <td>{x?.address}</td>
                                           <td>{x?.longitude}</td>

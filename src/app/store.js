@@ -6,6 +6,7 @@ import authSlice from "../features/auth/authSlice";
 import devicesStoreSlice from "../features/dashboard/pages/device_store/devicesStoreSlice";
 import blockSlice from "../features/dashboard/pages/blocks/blockSlice";
 import merchantSlice from "../features/dashboard/pages/merchants/merchantSlice";
+import energySourceSlice from "../features/dashboard/pages/energy_sources/energySourceSlice";
 
 const Store = configureStore({
     reducer:{
@@ -14,7 +15,8 @@ const Store = configureStore({
         device: deviceSlice,
         devicesStore: devicesStoreSlice,
         block: blockSlice,
-        merchant: merchantSlice
+        merchant: merchantSlice,
+        energySource: energySourceSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: true

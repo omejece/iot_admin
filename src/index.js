@@ -39,7 +39,7 @@ root.render(
                          <Route path="merchant_detail/:id" element={<MerchantDetail />} />
 
                          <Route path="blocks" element={<Block />} />
-                         <Route path="block_detail/:id" element={<BlockDetail />} />
+                         <Route path="block_detail/:reference" element={<BlockDetail />} />
 
                          <Route path="consumptions" element={<Consumption />} />
 

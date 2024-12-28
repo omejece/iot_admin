@@ -46,6 +46,13 @@ const blockApiSlice = apiSlice.injectEndpoints({
                 url: `/admin/block/search?reference=${credentials.reference}`,
                 method: 'GET'
             })
+        }),
+
+        blockDevices: builder.query({
+            query: (credentials)=>({
+                url: `/admin/block/devices?reference=${credentials.reference}`,
+                method: 'GET'
+            })
         })
      })
 });
@@ -56,5 +63,6 @@ export const {
     useDeleteBlockMutation,
     useGetBlocksQuery,
     useGetBlockQuery,
-    useSearchBlockQuery
+    useSearchBlockQuery,
+    useBlockDevicesQuery
 } = blockApiSlice;
