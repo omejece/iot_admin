@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import {useGetDevicesQuery, useCreateDeviceMutation, useEditDeviceMutation, useDeleteDeviceMutation} from './deviceApiSlice'; 
+import {useGetDeviceTypesQuery} from './deviceTypeApiSlice';
 import { useSelector } from 'react-redux';
 import { Modal, Button, Form,Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
@@ -18,6 +19,7 @@ const Device = (props)=>{
     const merchants = useSelector((state)=>state.merchant.merchants);
     const [merchantBlocks,setMerchantBlocks] = useState([]);
     const {data: devices,isLoading: isDeviceLoading, isSuccess: isDeviceLoaded, refetch: refetchDevice} = useGetDevicesQuery();
+    const {data: deviceTypesData, isLoading: isDeviceTypesLoading, isSuccess: isDeviceTypesLoaded} = useGetDeviceTypesQuery();
     const [createDevice,{data:deviceSaveResp,isSuccess:isDeviceSaveSuccess,isError: isDeviceErrorSave}] = useCreateDeviceMutation();
     const [editDevice,{data:deviceUpdateResp,isSuccess:isDeviceUpdateSuccess,isError: isDeviceErrorUpdate}] = useEditDeviceMutation();
     const [deleteDevice,{isSuccess:isDeviceDeleteSuccess,isError: isDeviceErrorDelete}] = useDeleteDeviceMutation();
@@ -494,15 +496,15 @@ const Device = (props)=>{
                                 required
                             >
                                 <option value="">Select device type</option>
-                                <option value="1">Prepaid Meter</option>
-                                <option value="2">Smart home</option>
-                                <option value="3">Kike meter</option>
-                                <option value="4">Gen starter</option>
-                                <option value="5">Gateway</option>
-                                <option value="6">Auto bidder</option>
-                                <option value="7">Inverter</option>
-                                <option value="8">Auto gen</option>
-                                <option value="9">Obidder Meter</option>
+                                {
+                                    deviceTypesData?.data?.length
+                                    ? deviceTypesData.data.map((x, y) =>
+                                        <option key={x.id} value={x.id}>
+                                            {x.name}
+                                        </option>
+                                    )
+                                    : <></>
+                                }
                             </Form.Select>
                         </Form.Group>
 
@@ -579,15 +581,16 @@ const Device = (props)=>{
                                 onChange={(e)=>setDeviceType(e.target.value)}
                                 required
                             >
-                                <option value="1">Prepaid Meter</option>
-                                <option value="2">Smart home</option>
-                                <option value="3">Kike meter</option>
-                                <option value="4">Gen starter</option>
-                                <option value="5">Gateway</option>
-                                <option value="6">Auto bidder</option>
-                                <option value="7">Inverter</option>
-                                <option value="8">Auto gen</option>
-                                <option value="9">Obidder Meter</option>
+                                <option value="">Select device type</option>
+                                {
+                                    deviceTypesData?.data?.length
+                                    ? deviceTypesData.data.map((x, y) =>
+                                        <option key={x.id} value={x.id}>
+                                            {x.name}
+                                        </option>
+                                    )
+                                    : <></>
+                                }
                             </Form.Select>
                         </Form.Group>
 
