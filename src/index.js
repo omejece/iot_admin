@@ -12,6 +12,7 @@ import DeviceStore from './features/dashboard/pages/device_store/DeviceStore';
 import DeviceStoreDetail from './features/dashboard/pages/device_store/DeviceStoreDetail';
 import Device from './features/dashboard/pages/devices/Device';
 import DeviceDetail from './features/dashboard/pages/devices/DeviceDetail';
+import DeviceType from './features/dashboard/pages/devices/DeviceType';
 import Merchant from './features/dashboard/pages/merchants/Merchant';
 import MerchantDetail from './features/dashboard/pages/merchants/MerchantDetail';
 import Block from './features/dashboard/pages/blocks/Block';
@@ -35,6 +36,7 @@ root.render(
 
                          <Route path="devices" element={<Device />} />
                          <Route path="device_detail/:imei" element={<DeviceDetail />} />
+                         <Route path="device_types" element={<DeviceType />} />
 
                          <Route path="merchants" element={<Merchant />} />
                          <Route path="merchant_detail/:id" element={<MerchantDetail />} />

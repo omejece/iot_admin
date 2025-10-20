@@ -7,10 +7,18 @@ const deviceTypeApiSlice = apiSlice.injectEndpoints({
                 url: '/admin/device_type/read',
                 method: 'GET'
             })
+        }),
+        createDeviceType: builder.mutation({
+            query: (credentials) => ({
+                url: '/admin/device_type/store',
+                method: 'POST',
+                body: {...credentials}
+            })
         })
     })
 });
 
 export const {
-    useGetDeviceTypesQuery
+    useGetDeviceTypesQuery,
+    useCreateDeviceTypeMutation
 } = deviceTypeApiSlice;
