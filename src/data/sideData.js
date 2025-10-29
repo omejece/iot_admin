@@ -25,6 +25,11 @@ const sideData = [
      icon:'fas fa-microchip'
    },
    {
+     name:'Device Types',
+     path:'/dashboard/device_types',
+     icon:'fas fa-microchip'
+   },
+   {
     name:'Users',
     path:'/dashboard/users',
     icon:'fas fa-user'

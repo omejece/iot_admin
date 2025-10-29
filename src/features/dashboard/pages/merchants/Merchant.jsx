@@ -29,8 +29,6 @@ const Merchant = (props)=>{
     
     const [name,setName] = useState("");
     const [address,setAddress] = useState("");
-    const [email,setEmail] = useState("");
-    const [phone,setPhone] = useState("");
 
 
     
@@ -61,8 +59,6 @@ const Merchant = (props)=>{
         setCurrentMerchant(data);
         setName(data?.name);
         setAddress(data?.address);
-        setEmail(data?.email);
-        setPhone(data?.phone);
         setShowUpdateMerchantModal(true);
     }
 
@@ -74,8 +70,6 @@ const Merchant = (props)=>{
         setShowAddMerchantModal(true);
         setName("");
         setAddress("");
-        setEmail("");
-        setPhone("");
     }
 
 
@@ -90,10 +84,9 @@ const Merchant = (props)=>{
             setShowUpdateMerchantModal(false);
             setShowSpinner(true);
             const resp = await editMerchant({
+                id: currentMerchant.id,
                 name: name,
-                address: address,
-                email: email,
-                phone: phone
+                address: address
             }).unwrap();
             if(resp.success == true){
                 setShowSpinner(false);
@@ -119,11 +112,8 @@ const Merchant = (props)=>{
             setShowAddMerchantModal(false);
             setShowSpinner(true);
             const resp = await createMerchant({
-                id: currentMerchant.id,
                 name: name,
-                address: address,
-                email: email,
-                phone: phone
+                address: address
             }).unwrap();
             if(resp.success == true){
                 setShowSpinner(false);
@@ -146,7 +136,7 @@ const Merchant = (props)=>{
 
     const handleDeleteItem = async(data)=>{
           Swal.fire({
-             title: `You are about to delete ${data.imei}`,
+             title: `You are about to delete ${data.name}`,
              text:'Are you sure you want to delete this Merchant',
              icon: 'warning',
              showCancelButton: false,
@@ -158,7 +148,7 @@ const Merchant = (props)=>{
                     try{
                         setShowSpinner(true);
                         const resp = await deleteMerchant({
-                            id: currentMerchant.id
+                            id: data.id
                         }).unwrap();
                         if(resp.success == true){
                             setShowSpinner(false);
@@ -183,16 +173,22 @@ const Merchant = (props)=>{
 
 
     const handleFilterData = (value)=>{
-        var filteredData = merchants.filter((x)=>{
-            if(x?.name.toLowerCase().startsWith(value.trim().toLowerCase())){
-                return true;
-            }
-            else{
-                return false;
-            }
-       });
+        setFilterByName(value);
+        if(value.trim() === ""){
+            setAllMerchant(merchants.data);
+        }
+        else{
+            var filteredData = merchants.data.filter((x)=>{
+                if(x?.name.toLowerCase().startsWith(value.trim().toLowerCase())){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+           });
 
-       setAllMerchant(filteredData);
+           setAllMerchant(filteredData);
+        }
     }
 
 
@@ -227,8 +223,6 @@ const Merchant = (props)=>{
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
                                     <th>Address</th>
                                     <th></th>
                                 </tr>
@@ -240,8 +234,6 @@ const Merchant = (props)=>{
                                       <tr>
                                           <td>{y + 1}</td>
                                           <td>{x.name}</td>
-                                          <td>{x?.phone}</td>
-                                          <td>{x?.email}</td>
                                           <td>{x?.address}</td>
                                           <td>
                                             <Dropdown>
@@ -297,26 +289,6 @@ const Merchant = (props)=>{
                         </Form.Group>
 
                         <Form.Group className="mb-3" >
-                            <Form.Label>Phone</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={phone}
-                                onChange={(e)=>setPhone(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" >
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={email}
-                                onChange={(e)=>setEmail(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" >
                             <Form.Label>Address</Form.Label>
                             <Form.Control
                                 type="text"
@@ -347,26 +319,6 @@ const Merchant = (props)=>{
                                 type="text"
                                 value={name}
                                 onChange={(e)=>setName(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" >
-                            <Form.Label>Phone</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={phone}
-                                onChange={(e)=>setPhone(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" >
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={email}
-                                onChange={(e)=>setEmail(e.target.value)}
                                 required
                             />
                         </Form.Group>
