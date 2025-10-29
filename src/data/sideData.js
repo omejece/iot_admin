@@ -9,11 +9,11 @@ const sideData = [
       path:'/dashboard/',
       icon:'fas fa-home'
    },
-   /*{
+   {
      name:'Device types',
      path:'/dashboard/device_types',
      icon:'fas fa-venus-mars'
-   },*/
+   },
    {
      name:'Devices Store',
      path:'/dashboard/device_store',

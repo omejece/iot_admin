@@ -366,7 +366,7 @@ const Device = (props)=>{
                 <div className="card">
                     <div className="card-header">
                          <h1 className="card-title">Devices</h1>
-                         <div className='row'>
+                         <div className='row additional-option'>
                             <div className='col-md-3 col-lg-3 col-sm-12'>
                                 <div class="input-group">
                                     <span class="input-group-prepend">
@@ -406,12 +406,13 @@ const Device = (props)=>{
                                     </select>
                                 </div>
                             </div>
-                            <button className='btn btn-primary' style={{width:'100px'}} onClick={handleShowAddModal}>
-                                <i className='fa fa-plus'></i> Add
-                            </button>
                          </div>
+
+                         <button className='btn btn-primary action-btn' style={{width:'100px'}} onClick={handleShowAddModal}>
+                            <i className='fa fa-plus'></i> Add
+                         </button>
                     </div>
-                    <div className="card-body" style={{width:'100%',height:'78vh',overflowY: 'auto'}}>
+                    <div className="card-body table-container">
                          <table className="table table-hashed">
                              <thead>
                                 <tr>

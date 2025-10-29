@@ -1,0 +1,129 @@
+
+
+.dashboard{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+
+.content-main{
+    display: grid;
+    width: 100%;
+    height: 95vh;
+    grid-template-columns: 18rem auto;
+    gap: 1rem;
+}
+
+
+.content-main  > .center-content{
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 0.5rem;
+}
+
+
+.app-nav-bar{
+    display: flex;
+    margin-left: -3rem !important;
+}
+
+
+.side-bar-main, .side-bar-main-hidden {
+    position: relative;
+}
+
+
+.table-container{
+    position: relative !important;
+    width: 100% !important;
+    height: 82vh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+.table-container > table{
+    position: absolute !important;
+}
+
+
+.card-header{
+    position: relative !important;
+}
+
+
+.action-btn{
+    position: absolute !important;
+    width: 100px;
+    right: 1rem;
+    top:0.5rem;
+}
+
+.main-header{
+}
+
+.desktop-nav-sidebtn{
+    color: white !important;
+    position: absolute !important;
+    left: 1rem;
+    top: 0.5rem;
+}
+
+
+
+@media screen and (max-width: 768px){
+
+    .side-bar-main{
+         position: fixed;
+         z-index: 50;
+         left: 0rem;
+         width: 60vw;
+         height: 97vh;
+         transition: width 1s;
+         border-right: 1px solid gray;
+         
+         > * {
+            display: block;
+        }
+    }
+
+    .side-bar-main-hidden{
+        position: fixed;
+        z-index: 50;
+        left: 0rem;
+        width: 0vw;
+        height: 97vh;
+        transition: width 1s;
+
+        > * {
+            display: none;
+        }
+    }
+
+    .content-main{
+        display: grid;
+        width: 100%;
+        height: 98vh;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .additional-option{
+        display: none !important;
+    }
+
+    .table-container{
+        position: relative !important;
+        width: 100% !important;
+        height: 80vh !important;
+        overflow: auto !important;
+    }
+
+}

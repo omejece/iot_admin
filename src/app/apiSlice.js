@@ -2,7 +2,8 @@ import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import { setCredentials, logOut ,selectCurrentAccessToken} from '../features/auth/authSlice';
 import {jwtDecode } from 'jwt-decode';
 
-const baseUrl = "http://66.29.130.36:5016/api/v2";//"http://localhost:4000";
+//const baseUrl = "http://66.29.130.36:5016/api/v2";//"http://localhost:4000";
+const baseUrl = "https://iot2.owattspay.net/api/v2";//"http://localhost:4000";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: baseUrl,

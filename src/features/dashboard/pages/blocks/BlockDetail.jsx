@@ -2,6 +2,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import ProgressSpinner from "../../../../components/ProgressSpinner";
 
+import { 
+    useGetYearlyImeiConsumptionQuery,
+    useGetYearlyBlockConsumptionQuery,
+    useGetImeiRangeConsumptionQuery,
+    useGetBlockRangeConsumptionQuery
+} from '../consumption/consumptionApiSlice';
+
 import { Pie, Bar, Line, Doughnut   } from 'react-chartjs-2';
 
 import {
@@ -29,28 +36,203 @@ const BlockDetail = (props)=>{
     const deviceTypes = useSelector((state)=>state.device.deviceTypes);
     const {data: getBlockDetail, isLoading: isBlockLoaded, isError: isBlockError, refetch: refetchBlock} = useGetBlockQuery({reference: reference});
     const {data: getBlockDevices, isLoading: isBlockDevicesLoaded, isError: isBlockDevicesError, refetch: refetchBlockDevices} = useBlockDevicesQuery({reference: reference});
-    
+ 
+    const [yearlyBlockConsumptionQuery,setYearlyBlockConsumptionQuery] = useState({
+        year: (new Date()).getFullYear(),
+        block_id: null
+    });
+
+    const [rangeBlockConsumptionQuery,setRangeBlockConsumptionQuery] = useState({
+        fromDate: (new Date()).toISOString().split("T")[0],
+        toDate: (new Date()).toISOString().split("T")[0],
+        block_id: null 
+    });
+
+
+
+
+    const {data: getBlockRangeConsumption, isLoading: isBlockRangeConsumptionLoaded, isError: isBlockRangeConsumptionError, refetch: refetchBlockRangeConsumption} = useGetBlockRangeConsumptionQuery(rangeBlockConsumptionQuery);
+    const {data: getBlockYearlyConsumption, isLoading: isBlockYearlyConsumptionLoaded, isError: isBlockYearlyConsumptionError, refetch: refetchBlockYearlyConsumption} = useGetYearlyBlockConsumptionQuery(yearlyBlockConsumptionQuery);
+ 
+
+
     const navigate = useNavigate();
 
     const [showSpinner,setShowSpinner] = useState(false);
 
     const [myBlockDetail, setMyBlockDetail] = useState();
 
-    const [energyFromDate,setEnergyFromDate] = useState("");
-    const [energyToDate,setEnergyToDate] = useState("");
+    const [energyFromDate,setEnergyFromDate] = useState((new Date()).toISOString().split("T")[0]);
+    const [energyToDate,setEnergyToDate] = useState((new Date()).toISOString().split("T")[0]);
     const [energyConsImei,setEnergyConsImei] = useState("");
 
-    const [gasFromDate,setGasFromDate] = useState("");
-    const [gasToDate,setGasToDate] = useState("");
+    const [gasFromDate,setGasFromDate] = useState(useState((new Date()).toISOString().split("T")[0]));
+    const [gasToDate,setGasToDate] = useState(useState((new Date()).toISOString().split("T")[0]));
     const [gasConsImei,setGasConsImei] = useState("");
 
-    const [yearConst,setYearConst] = useState("");
+    const [yearCons,setYearCons] = useState((new Date()).getFullYear());
     const [yearConsImei,setYearConsImei] = useState("");
 
     const [blockDevicesImei,setBlockDevicesImei] = useState("");
     const [blockDevices,setBlockDevices] = useState("");
 
-    const [deviceTypeCount,setDeviceTypeCount] = useState([0,0,0,0,0,0,0,0,0,0])
+    const [deviceTypeCount,setDeviceTypeCount] = useState([0,0,0,0,0,0,0,0,0,0]);
+
+    const [blockRangeConsumption,setBlockRangeConsumption] = useState([]);
+    const [blockYearlyConsumption,setBlockYearlyConsumption] = useState({"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0});
+    
+
+    
+    useEffect(()=>{refetchBlockYearlyConsumption()},[yearlyBlockConsumptionQuery]);
+    useEffect(()=>{refetchBlockRangeConsumption()},[rangeBlockConsumptionQuery]);
+
+    useEffect(()=>{
+
+        setRangeBlockConsumptionQuery({
+            fromDate: energyFromDate,
+            toDate: energyToDate,
+            block_id: getBlockDetail?.data?.id 
+        });
+
+    },[energyFromDate,energyToDate]);
+
+
+    useEffect(()=>{
+        setYearlyBlockConsumptionQuery({
+            year: yearCons,
+            block_id: getBlockDetail?.data.id 
+        });
+
+    },[yearCons]);
+
+
+
+
+    useEffect(()=>{ // monitors changes in range and block consumption
+         if(getBlockRangeConsumption?.data){
+             setBlockRangeConsumption(getBlockRangeConsumption.data);
+             setUpRangeConsumptionGraph(getBlockRangeConsumption.data);
+         }
+
+         if(getBlockYearlyConsumption?.data){
+            setUpYearlyConsumptionGraph(getBlockYearlyConsumption.data);
+         }
+    },[
+        getBlockRangeConsumption,
+        getBlockYearlyConsumption,
+        energyConsImei,
+        yearConsImei
+    ]);
+    
+
+
+    const setUpRangeConsumptionGraph = (data)=>{
+        var sumGrid = 0;
+        var sumGen = 0;
+        var sumSolar = 0;
+        var sumBattery = 0;
+
+        /// ckkk
+
+        if(energyConsImei && energyConsImei != ""){ // if imei was selected, filter for a particular imei
+            data = data.filter((x)=>{
+                if(x.imei == energyConsImei){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            })
+        }
+
+        setBlockRangeConsumption(data);
+
+        if(data){
+            data?.forEach(x=>{ // count different consumptions sources
+               sumGrid = (sumGrid/1) + (x.data.grid_consumption/1);
+               sumGen = (sumGen/1) + (x.data.gen_consumption/1);
+               sumSolar = (sumSolar/1) + (x.data.solar_consumption/1);
+               sumBattery = (sumBattery/1) + (x.data.battery_consumption/1);
+           })
+        }
+
+       setEnergyConsPieData({ // populate the consumptions to graph
+            labels: ['Grid', 'Gen', 'Solar','Battery'],
+            datasets: [
+                {
+                label: 'Energy Distribution',
+                data: [sumGrid, sumGen, sumSolar, sumBattery],
+                backgroundColor: [
+                    'maroon',
+                    'blue',
+                    'green',
+                    'yellow'
+                ],
+                borderColor: [
+                    'maroon',
+                    'blue',
+                    'green',
+                    'yellow'
+                ],
+                borderWidth: 1,
+                },
+            ],
+        });
+    }
+    
+
+    const setUpYearlyConsumptionGraph = (data)=>{
+        var sumGrid = 0;
+        var sumGen = 0;
+        var sumSolar = 0;
+        var sumBattery = 0;
+
+        /// create object to hold different monts data using hash key data structure
+
+        var monthlySum = {"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0};
+        
+        if(data){
+
+            if(yearConsImei && yearConsImei != ""){ // if imei was selected, filter for a particular imei
+                data = data?.filter((x)=>{
+                    if(x.imei == yearConsImei){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            }
+           
+            data?.forEach(x=>{
+                // the division by 1 converts the number string to number
+                monthlySum[x.month_taken] = (monthlySum[x.month_taken]/1) + (x?.data.total_consumption/1);
+            });
+
+        }
+
+        setBlockYearlyConsumption(monthlySum);
+
+        setConstSummaryData({
+            labels: ['January', 'February', 'March', 'April', 'May','June','July','August','September','October','November','December'], // X-axis labels
+            datasets: [
+              {
+                label: 'Energy (kwh)',
+                data: Object.values(monthlySum),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)', // Bar color
+              },
+              {
+                label: 'Gas (kg)',
+                data: [28, 48, 40, 19, 86,88,30, 43, 48, 15, 89,81],
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+              }
+            ],
+        });
+
+    }
+    
+    
+
 
 
 
@@ -240,6 +422,16 @@ const BlockDetail = (props)=>{
     useEffect(()=>{
          if(getBlockDetail){
             setMyBlockDetail(getBlockDetail.data);
+            setYearlyBlockConsumptionQuery({
+                year: (new Date()).getFullYear(),
+                block_id: getBlockDetail?.data.id
+            });
+        
+            setRangeBlockConsumptionQuery({
+                fromDate: (new Date()).toISOString().split("T")[0],
+                toDate: (new Date()).toISOString().split("T")[0],
+                block_id: getBlockDetail?.data.id
+            });
          }
 
          if(getBlockDevices){
@@ -478,12 +670,12 @@ const BlockDetail = (props)=>{
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="card-body" style={{width:'100%',overflowY: 'auto'}}>
+                                        <div className="card-body" style={{width:'100%',height:'500px',overflowY: 'hidden'}}>
                                               <div className="row">
                                                     <div className="col-md-4 col-lg-4 col-sm-12">
                                                             <Doughnut  data={energyConsPieData} options={pieOptions} />
                                                     </div>
-                                                    <div className="col-md-8 col-lg-8 col-sm-12">
+                                                    <div className="col-md-8 col-lg-8 col-sm-12" style={{overflowY:'auto',height:'450px'}}>
                                                             <table className="table table-bordered">
                                                                 <thead>
                                                                     <tr>
@@ -497,8 +689,23 @@ const BlockDetail = (props)=>{
                                                                         <th>Total</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-
+                                                                <tbody >
+                                                                   {
+                                                                     blockRangeConsumption.map((data,index)=>{
+                                                                          return (
+                                                                              <tr key={index}>
+                                                                                 <td>{index + 1}</td>
+                                                                                 <td>{data?.date_taken}</td>
+                                                                                 <td>{data?.imei}</td>
+                                                                                 <td>{data?.data.grid_consumption.toFixed(2)}</td>
+                                                                                 <td>{data?.data.gen_consumption.toFixed(2)}</td>
+                                                                                 <td>{data?.data.solar_consumption.toFixed(2)}</td>
+                                                                                 <td>{data?.data.battery_consumption.toFixed(2)}</td>
+                                                                                 <td>{data?.data.total_consumption.toFixed(2)}</td>
+                                                                              </tr>
+                                                                          );
+                                                                     })
+                                                                   }
                                                                 </tbody>
                                                             </table>                                               
                                                     </div>
@@ -594,7 +801,7 @@ const BlockDetail = (props)=>{
                                                         <span class="input-group-prepend">
                                                             <i class="input-group-text">Year</i>
                                                         </span>
-                                                        <input class="form-control" type="date" value={yearConst} onChange={(e)=>setYearConst(e.target.value)} />
+                                                        <input class="form-control" type="text" value={yearCons} onChange={(e)=>setYearCons(e.target.value)} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -617,62 +824,62 @@ const BlockDetail = (props)=>{
                                                             <tbody>
                                                                 <tr>
                                                                     <td>January</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["1"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>February</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["2"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>March</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["3"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>April</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["4"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>May</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["5"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>June</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["6"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>July</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["7"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>August</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["8"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>September</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["9"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>October</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["10"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>November</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["11"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>December</td>
-                                                                    <td>0</td>
+                                                                    <td>{blockYearlyConsumption["12"].toFixed(2)}</td>
                                                                     <td>0</td>
                                                                 </tr>
                                                             </tbody>
@@ -704,11 +911,7 @@ const BlockDetail = (props)=>{
                                         </div>
                                         <div className="card-body" style={{width:'100%',overflowY: 'hidden',height:'50vh'}}>
                                              <div className="row">
-
-                                                    <div className="col-md-6 col-lg-6 col-sm-12">
-                                                          <Bar data={blockDeviceDistributionData} options={blockDeviceDistributionOption} />
-                                                    </div>
-                                                    <div className="col-md-6 col-lg-6 col-sm-12" style={{height:'40vh',overflowY:'auto'}}>
+                                                    <div className="col-md-12 col-lg-12 col-sm-12" style={{height:'40vh',overflowY:'auto'}}>
                                                         <table className="table table-bordered">
                                                             <thead>
                                                                 <tr>

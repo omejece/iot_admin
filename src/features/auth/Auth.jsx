@@ -2,7 +2,7 @@
 
 
 
-import '../../assets/css/mystyle.css';
+import './auth.css';
 import { useState } from 'react';
 import {jwtDecode } from 'jwt-decode';
 import { useLoginMutation } from './authApiSlice';
@@ -36,7 +36,7 @@ const Auth = (props)=>{
         }
     }
 
-    return (
+    /*return (
         <div className='container-fluid' style={{backgroundColor:'white',height:'100vh'}}>
             <div className='row' style={{backgroundColor:'white',height:'100vh'}}>
                 <div className='col-md-8 col-lg-8 col-sm-12 login-background'>
@@ -77,7 +77,58 @@ const Auth = (props)=>{
                 </div>
             </div>
         </div>
+    )*/
+
+    
+    return (
+        <div className='auth'>
+             <div className='body'>
+                 <div className='login-form'>
+                     <h1>Sign in</h1>
+                     <form className='form' onSubmit={handleLogin}>
+                         <div className='input-field'>
+                             <input 
+                                type='text' 
+                                placeholder='Username' 
+                                className='text-input'
+                                value={email} onChange={(e)=>setEmail(e.target.value)}
+                             />
+                         </div>
+
+                         <div className='input-field'>
+                             <input 
+                               type='password' 
+                               placeholder='Password' 
+                               className='text-input' 
+                               value={password} onChange={(e)=>setPassword(e.target.value)}
+                             />
+                         </div>
+
+                         <div className='forgot-password'>
+                              <a href='/'>Forgotten password ?</a>
+                         </div>
+
+                         
+
+                         <button type="submit" className='submit-btn'>
+                            Login
+                         </button>
+
+                         {
+                            loginStatus != ""
+                            ? <div className='login-status'>
+                                {loginStatus}
+                            </div>
+                            : <></>
+                        }
+                     </form>
+                 </div>
+             </div>
+        </div>
     )
+    
+
+
 }
 
 

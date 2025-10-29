@@ -3,6 +3,7 @@ import "../../assets/plugins/fontawesome-free/css/all.min.css";
 import "../../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
 import "../../assets/dist/css/adminlte.min.css";
 import "../../index.css";
+import "./dashboard.css";
 import { useEffect, useState } from 'react';
 import PageNavBar from "../../components/PageNavBar";
 import PageSideBar from "../../components/PageSideBar";
@@ -20,6 +21,7 @@ const Dashboard = (props)=>{
     const {data: allMerchants, isLoading: isMerchantLoading, isSuccess: isMerchantLoaded, refetch: refetchMerchant } = useGetMerchantsQuery();
 
     const [sideBarWidth,setSideBarWidth] = useState("15%");
+    const [showSideBar,setShowSideBar] = useState(false);
 
     useEffect(()=>{
         refetchBlock();
@@ -65,12 +67,17 @@ const Dashboard = (props)=>{
     }
 
      return (
-        <div className="wrapper" >
-            <PageNavBar onControlTab={handleControlTab} />
-            <PageSideBar width={sideBarWidth} />
-            
-            <div class="content-wrapper" style={{paddingLeft:"0%",padding:'5px' }}>
-               <Outlet />
+        <div className="dashboard" >
+            <PageNavBar  onToggleSideBar={()=>setShowSideBar(!showSideBar)}/>
+            <div className="content-main">
+                  <PageSideBar 
+                    onClose={()=>setShowSideBar(false)} 
+                    showSideBar={showSideBar} 
+                  />
+                  
+                  <div class="center-content" >
+                     <Outlet />
+                  </div>
             </div>
         </div>
      )

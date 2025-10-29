@@ -41,7 +41,63 @@ const consumptionApiSlice = apiSlice.injectEndpoints({
                 url: `/admin/Consumption/search?imei=${credentials.id}`,
                 method: 'GET'
             })
+        }),
+        getYearlyImeiBlockConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/yearly_consumption?imei=${credentials?.imei}&block_id=${credentials?.block_id}&year=${credentials?.year}`,
+                method: 'GET'
+            })
+        }),
+       
+        getYearlyImeiConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/yearly_consumption?imei=${credentials?.imei}&year=${credentials?.year}`,
+                method: 'GET'
+            })
+        }),
+        
+        getYearlyBlockConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/yearly_consumption?block_id=${credentials?.block_id}&year=${credentials?.year}`,
+                method: 'GET'
+            })
+        }),
+        
+        getYearlyConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/yearly_consumption?year=${credentials?.year}`,
+                method: 'GET'
+            })
+        }),
+        
+        getImeiBlockRangeConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/range_consumption?imei=${credentials?.imei}&block_id=${credentials?.block_id}&fromDate=${credentials?.fromDate}&toDate=${credentials?.toDate}`,
+                method: 'GET'
+            })
+        }),
+        
+        getImeiRangeConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/range_consumption?imei=${credentials?.imei}&fromDate=${credentials?.fromDate}&toDate=${credentials?.toDate}`,
+                method: 'GET'
+            })
+        }),
+        
+        getBlockRangeConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/range_consumption?block_id=${credentials?.block_id}&fromDate=${credentials?.fromDate}&toDate=${credentials?.toDate}`,
+                method: 'GET'
+            })
+        }),
+
+        getRangeConsumption: builder.query({
+            query: (credentials)=>({
+                url: `/admin/range_consumption?fromDate=${credentials?.fromDate}&toDate=${credentials?.toDate}`,
+                method: 'GET'
+            })
         })
+
      })
 });
 
@@ -51,5 +107,13 @@ export const {
     useDeleteConsumptionMutation,
     useGetConsumptionsQuery,
     useGetConsumptionQuery,
-    useSearchConsumptionQuery
+    useSearchConsumptionQuery,
+    useGetYearlyImeiBlockConsumptionQuery,
+    useGetYearlyImeiConsumptionQuery,
+    useGetYearlyBlockConsumptionQuery,
+    useGetYearlyConsumptionQuery,
+    useGetImeiBlockRangeConsumptionQuery,
+    useGetImeiRangeConsumptionQuery,
+    useGetBlockRangeConsumptionQuery,
+    useGetRangeConsumptionQuery
 } = consumptionApiSlice;

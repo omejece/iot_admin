@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import ProgressSpinner from '../../../../components/ProgressSpinner';
 import { useNavigate } from 'react-router-dom';
 
+
 const Block = (props)=>{
     
     const navigate = useNavigate();
@@ -19,6 +20,8 @@ const Block = (props)=>{
     const [createBlock,{isSuccess:isBlockSaveSuccess,isError: isBlockErrorSave}] = useCreateBlockMutation();
     const [editBlock,{isSuccess:isBlockUpdateSuccess,isError: isBlockErrorUpdate}] = useEditBlockMutation();
     const [deleteBlock,{isSuccess:isBlockDeleteSuccess,isError: isBlockErrorDelete}] = useDeleteBlockMutation();
+
+
 
     const [allBlock,setAllBlock] = useState([]);
     const [showAddBlockModal,setShowAddBlockModal] = useState(false);
@@ -220,7 +223,7 @@ const Block = (props)=>{
                 <div className="card">
                     <div className="card-header">
                          <h1 className="card-title">Blocks</h1>
-                         <div className='row'>
+                         <div className='row additional-option'>
                             <div className='col-md-8 col-lg-8 col-sm-12'>
                                 <div class="input-group">
                                     <span class="input-group-prepend">
@@ -229,12 +232,12 @@ const Block = (props)=>{
                                     <input class="form-control" type="search" value={filterByName} onChange={(e)=>handleFilterData(e.target.value)} />
                                 </div>
                             </div>
-                            <button className='btn btn-primary' style={{width:'100px'}} onClick={handleShowAddModal}>
-                                <i className='fa fa-plus'></i> Add
-                            </button>
                          </div>
+                         <button className='btn btn-primary  action-btn' onClick={handleShowAddModal}>
+                            <i className='fa fa-plus'></i> Add
+                         </button>
                     </div>
-                    <div className="card-body" style={{width:'100%',height:'78vh',overflowY: 'auto'}}>
+                    <div className="card-body table-container">
                          <table className="table table-bordered">
                              <thead>
                                 <tr>

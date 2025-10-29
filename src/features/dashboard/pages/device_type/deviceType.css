@@ -1,0 +1,150 @@
+
+
+
+
+.deviceDetail{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+
+    .deviceDetailContainer{
+        width: 100%;
+        height: calc(100vh - 100px);
+        display: grid;
+        flex-direction: row;
+        grid-template-columns: auto 25rem;
+        gap: 2rem;
+        
+        .detailCenter{
+            height: calc(100vh - 110px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+
+            .topCenterDetail{
+                height: 20vh;
+                width: 100%;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            }
+
+            .baseCenterDetail{
+                height: calc(80vh - 110px);
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                gap: 2rem;
+
+                .baseCenterSideDetail{
+                    height: calc(80vh - 110px);
+                    width: 30%;
+                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                    padding: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2rem;
+
+                    .controlContent{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        span{
+                            font-size: 20px;
+                        }
+
+                    }
+                }
+
+                .baseCenterMainDetail{
+                    height: calc(80vh - 110px);
+                    width: 70%;
+                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                    display: flex;
+                    flex-direction: column;
+
+                    .smallBoxInfoContainer{
+                        height: 40vh;
+                        display: flex;
+                        flex-direction: row;
+                        padding-left: 2rem;
+                        padding-right: 2rem;
+                        padding-top: 1rem;
+                        gap: 2rem;
+
+                        .smallBoxInfo{
+                            height: 100px;
+                            width: 35%;
+                            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                            padding: 0.5rem;
+
+                            > span{
+                                color: white;
+                                font-size: 18px;
+                            }
+                        }
+
+                        .smallBoxInfo:nth-of-type(1){
+                            background-color: #6AB8D2;
+                        }
+
+                        .smallBoxInfo:nth-of-type(2){
+                            background-color: #62CB97;
+                        }
+
+                        .smallBoxInfo:nth-of-type(3){
+                            background-color: #D48D4A;
+                        }
+
+                        
+                    }
+
+                    .graphContainer{
+                        height: calc(60vh - 110px);
+                    }
+                }
+            }
+        }
+
+        .detaitSide{
+            height: calc(100vh - 110px);
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 2rem;
+
+            .alarmContainer{
+                height: calc(30vh);
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                padding: 10px;
+
+                > h4{
+                   color: white;
+                }
+            }
+
+            .consumptionContainer{
+                height: calc(70vh - 115px);
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                padding: 10px;
+                overflow-y: auto;
+            }
+        }
+
+
+
+    }
+     
+
+
+
+
+
+
+
+
+
+}

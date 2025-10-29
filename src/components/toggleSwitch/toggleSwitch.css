@@ -1,0 +1,57 @@
+
+
+
+
+.toggleSwitch{
+    position: relative;
+    height: 40px;
+    display: inline-block;
+
+    input{
+       opacity: 0;
+       width: 0;
+       height: 0;
+    }
+
+    .slider{
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+        background-color: #CCCCCC;
+        transition: .4s;
+        -webkit-transition: .4s;
+    }
+
+
+     .slider:before{
+        position: absolute;
+        cursor: pointer;
+        content: "";
+        height: 32px;
+        width: 32px;
+        left: 4px;
+        top: 4px;
+        background-color: white;
+        cursor: pointer;
+        transition: .4s;
+        -webkit-transition: .4s;
+    }
+
+    input:checked + .slider{
+        background-color: #3790E2;
+        transition: .4s;
+        -webkit-transition: .4s;
+    }
+
+
+     input:checked + .slider:before{
+        -webkit-transform: translateX(calc(200% - 4px));
+        -ms-transform: translateX(calc(200% - 4px));
+        transform: translateX(calc(200% - 4px));
+    }
+
+
+}
