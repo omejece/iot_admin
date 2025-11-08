@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import {useGetBlocksQuery, useCreateBlockMutation, useEditBlockMutation, useDeleteBlockMutation} from './blockApiSlice'; 
+import {useGetMerchantsQuery} from '../merchants/merchantApiSlice';
 import { useSelector } from 'react-redux';
 import { Modal, Button, Form,Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
@@ -15,8 +16,8 @@ const Block = (props)=>{
     
     const navigate = useNavigate();
     const energySource = useSelector((state)=>state.energySource.sources);
-    const merchants = useSelector((state)=>state.merchant.merchants);
     const {data: blocks,isLoading: isBlockLoading, isSuccess: isBlockLoaded, refetch: refetchBlock} = useGetBlocksQuery();
+    const {data: merchantsData, isLoading: isMerchantsLoading, isSuccess: isMerchantsLoaded} = useGetMerchantsQuery();
     const [createBlock,{isSuccess:isBlockSaveSuccess,isError: isBlockErrorSave}] = useCreateBlockMutation();
     const [editBlock,{isSuccess:isBlockUpdateSuccess,isError: isBlockErrorUpdate}] = useEditBlockMutation();
     const [deleteBlock,{isSuccess:isBlockDeleteSuccess,isError: isBlockErrorDelete}] = useDeleteBlockMutation();
@@ -326,10 +327,11 @@ const Block = (props)=>{
                                 onChange={(e)=>setMerchant(e.target.value)}
                                 required
                             >
+                                <option value="">-- Select merchants --</option>
                                  {
-                                    merchants?.length
-                                    ? merchants.map((x,y)=>
-                                        <option value={x.id}>
+                                    merchantsData?.data?.length
+                                    ? merchantsData.data.map((x,y)=>
+                                        <option key={x.id} value={x.id}>
                                             {x?.name}
                                         </option>
                                     )
@@ -411,10 +413,11 @@ const Block = (props)=>{
                                 onChange={(e)=>setMerchant(e.target.value)}
                                 required
                             >
+                                <option value="">-- Select merchants --</option>
                                  {
-                                    merchants?.length
-                                    ? merchants.map((x,y)=>
-                                        <option value={x.id}>
+                                    merchantsData?.data?.length
+                                    ? merchantsData.data.map((x,y)=>
+                                        <option key={x.id} value={x.id}>
                                             {x?.name}
                                         </option>
                                     )

@@ -51,7 +51,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 			}
 		}
 		else {
-			api.dispatch(logOut());
+			//api.dispatch(logOut());
 		}
 	}
 	return result;
